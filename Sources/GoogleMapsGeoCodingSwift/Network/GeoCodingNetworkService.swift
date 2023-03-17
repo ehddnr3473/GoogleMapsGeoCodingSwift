@@ -7,15 +7,13 @@
 
 import Foundation
 
-public enum NetworkServiceError: String, Error {
-    case responseError = "Response Error occured"
-}
-
 public protocol GeoCodingNetworkService {
     typealias CompletionHandler = (Result<Data, Error>) -> Void
+    func sendCompletion(with geoCodingRequest: GeoCodingRequest, _ endPoint: EndPoint, completionHandler: @escaping CompletionHandler)
 }
 
 public struct DefaultGeoCodingNetworkService {
+    // MARK: - Private
     private let key: String
     
     public init(key: String) {
@@ -49,8 +47,8 @@ public struct DefaultGeoCodingNetworkService {
 }
 
 extension DefaultGeoCodingNetworkService: GeoCodingNetworkService {
-    func sendCompletion(with getCodingRequest: GeoCodingRequest, _ endPoint: EndPoint, completionHandler: @escaping CompletionHandler) {
-        let request = prepareRequest(geoCodingRequest: getCodingRequest, endPoint: endPoint)
+    public func sendCompletion(with geoCodingRequest: GeoCodingRequest, _ endPoint: EndPoint, completionHandler: @escaping CompletionHandler) {
+        let request = prepareRequest(geoCodingRequest: geoCodingRequest, endPoint: endPoint)
         makeRequest(request, completionHandler: completionHandler)
     }
 }
