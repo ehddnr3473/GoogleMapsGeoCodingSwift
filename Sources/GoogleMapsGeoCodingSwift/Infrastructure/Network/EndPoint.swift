@@ -7,8 +7,12 @@
 
 import Foundation
 
-public enum HttpMethodType: String {
+enum HttpMethodType: String {
     case get = "GET"
+}
+
+enum OutputFormat: String {
+    case json = "json"
 }
 
 public enum EndPoint {
@@ -26,7 +30,14 @@ extension EndPoint {
     var path: String {
         switch self {
         case .`default`:
-            return "/maps/api/geocode/"
+            return "/maps/api/geocode/\(OutputFormat.json.rawValue)?"
+        }
+    }
+    
+    var method: String {
+        switch self {
+        case .`default`:
+            return HttpMethodType.get.rawValue
         }
     }
 }
