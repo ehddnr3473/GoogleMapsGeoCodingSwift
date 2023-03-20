@@ -27,6 +27,20 @@ extension EndPoint {
         }
     }
     
+    var scheme: String {
+        switch self {
+        case .`default`:
+            return "https"
+        }
+    }
+    
+    var host: String {
+        switch self {
+        case .`default`:
+            return "maps.googleapis.com"
+        }
+    }
+    
     var path: String {
         switch self {
         case .`default`:
