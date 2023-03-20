@@ -1,4 +1,3 @@
 # GoogleMapsGeoCodingSwift
 
-A description of this package.
-# GoogleMapsGeoCodingSwift
+- Google Maps Geocoding API module
