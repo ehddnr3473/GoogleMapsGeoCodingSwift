@@ -9,7 +9,7 @@ import Foundation
 
 public protocol GeoCodingNetworkService {
     typealias CompletionHandler = (Result<Data, Error>) -> Void
-    func sendCompletion(with geoCodingRequest: GeoCodingRequest, _ endPoint: EndPoint, completionHandler: @escaping CompletionHandler)
+    func request(with geoCodingRequest: GeoCodingQuery, _ endPoint: EndPoint, completionHandler: @escaping CompletionHandler)
 }
 
 public struct DefaultGeoCodingNetworkService {
@@ -20,9 +20,9 @@ public struct DefaultGeoCodingNetworkService {
         self.key = key
     }
     
-    private func prepareRequest(geoCodingRequest: GeoCodingRequest, endPoint: EndPoint) -> URLRequest {
+    private func prepareRequest(geoCodingQuery: GeoCodingQuery, endPoint: EndPoint) -> URLRequest {
         var urlComponents = URLComponents()
-        let address = URLQueryItem(name: "address", value: geoCodingRequest.address)
+        let address = URLQueryItem(name: "address", value: geoCodingQuery.address)
         let key = URLQueryItem(name: "key", value: key)
         urlComponents.path = endPoint.path
         urlComponents.queryItems = [address, key]
@@ -47,8 +47,8 @@ public struct DefaultGeoCodingNetworkService {
 }
 
 extension DefaultGeoCodingNetworkService: GeoCodingNetworkService {
-    public func sendCompletion(with geoCodingRequest: GeoCodingRequest, _ endPoint: EndPoint, completionHandler: @escaping CompletionHandler) {
-        let request = prepareRequest(geoCodingRequest: geoCodingRequest, endPoint: endPoint)
+    public func request(with geoCodingQuery: GeoCodingQuery, _ endPoint: EndPoint, completionHandler: @escaping CompletionHandler) {
+        let request = prepareRequest(geoCodingQuery: geoCodingQuery, endPoint: endPoint)
         makeRequest(request, completionHandler: completionHandler)
     }
 }
