@@ -38,6 +38,7 @@ public struct DefaultGeoCodingNetworkService {
     }
     
     private func makeRequest(_ request: URLRequest, completionHandler: @escaping CompletionHandler) {
+        print(String(describing: request.url))
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 completionHandler(.failure(error))
