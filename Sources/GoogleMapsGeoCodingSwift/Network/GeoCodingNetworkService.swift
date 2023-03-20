@@ -18,9 +18,9 @@ public protocol GeoCodingNetworkService {
 
 public struct DefaultGeoCodingNetworkService {
     // MARK: - Private
-    private let key: String
+    private let key: String?
     
-    public init(key: String) {
+    public init(key: String?) {
         self.key = key
     }
     
