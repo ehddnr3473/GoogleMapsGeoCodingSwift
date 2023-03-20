@@ -30,7 +30,7 @@ extension EndPoint {
     var path: String {
         switch self {
         case .`default`:
-            return "/maps/api/geocode/\(OutputFormat.json.rawValue)?"
+            return "/maps/api/geocode/\(OutputFormat.json.rawValue)"
         }
     }
     
