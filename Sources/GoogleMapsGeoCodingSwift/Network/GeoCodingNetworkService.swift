@@ -26,19 +26,22 @@ public struct DefaultGeoCodingNetworkService {
     
     private func prepareRequest(geoCodingQuery: GeoCodingQuery, endPoint: EndPoint) -> URLRequest {
         var urlComponents = URLComponents()
+        urlComponents.scheme = endPoint.scheme
+        urlComponents.host = endPoint.host
+        urlComponents.path = endPoint.path
+        
         let address = URLQueryItem(name: "address", value: geoCodingQuery.address)
         let key = URLQueryItem(name: "key", value: key)
-        urlComponents.path = endPoint.path
+        
         urlComponents.queryItems = [address, key]
         
-        var request = URLRequest(url: urlComponents.url(relativeTo: URL(string: endPoint.baseURL))!)
+        var request = URLRequest(url: urlComponents.url!)
         request.httpMethod = endPoint.method
         
         return request
     }
     
     private func makeRequest(_ request: URLRequest, completionHandler: @escaping CompletionHandler) {
-        print(String(describing: request.url))
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 completionHandler(.failure(error))
