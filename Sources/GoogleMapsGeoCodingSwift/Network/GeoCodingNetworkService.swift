@@ -9,7 +9,11 @@ import Foundation
 
 public protocol GeoCodingNetworkService {
     typealias CompletionHandler = (Result<Data, Error>) -> Void
-    func request(with geoCodingRequest: GeoCodingQuery, _ endPoint: EndPoint, completionHandler: @escaping CompletionHandler)
+    
+    func request(with geoCodingQuery: GeoCodingQuery, _ endPoint: EndPoint, completionHandler: @escaping CompletionHandler)
+    @available(swift 5.5)
+    @available(macOS 10.15, iOS 13, watchOS 6, tvOS 13, *)
+    func request(with geoCodingQuery: GeoCodingQuery, _ endPoint: EndPoint) async throws -> Data
 }
 
 public struct DefaultGeoCodingNetworkService {
@@ -50,5 +54,15 @@ extension DefaultGeoCodingNetworkService: GeoCodingNetworkService {
     public func request(with geoCodingQuery: GeoCodingQuery, _ endPoint: EndPoint, completionHandler: @escaping CompletionHandler) {
         let request = prepareRequest(geoCodingQuery: geoCodingQuery, endPoint: endPoint)
         makeRequest(request, completionHandler: completionHandler)
+    }
+    
+    @available(swift 5.5)
+    @available(macOS 10.15, iOS 13, watchOS 6, tvOS 13, *)
+    public func request(with geoCodingQuery: GeoCodingQuery, _ endPoint: EndPoint) async throws -> Data {
+        return try await withCheckedThrowingContinuation { continuation in
+            request(with: geoCodingQuery, endPoint) { result in
+                continuation.resume(with: result)
+            }
+        }
     }
 }
